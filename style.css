@@ -1,0 +1,109 @@
+@font-face {
+    font-family: 'TT Lakes';
+    src: url('TTLakes-Regular.eot');
+    src: local('TT Lakes Regular'), local('TTLakes-Regular'),
+        url('./fonts/TTLakes-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* display: flex;
+    flex-direction: column; */
+    /* display: grid;
+    grid-template: 88px 509px / 320px; */
+    margin: 0;
+    font-family: 'TT Lakes', sans-serif;
+    font-size: 16px;
+    /* width: 320px; */
+}
+
+.header {
+    display: block;
+    /* gap: 16px; */
+    padding: 16px;
+    width: 100vw;
+    height: 80px;
+    border-top: 1px solid #D9FFF5; /* solid - это линия */
+    background-image: linear-gradient(to right, #F8F8F8,#FFFFFF); /* linear-gradient - это градиент в CSS и он считается изображением, а не цветом. В таком написании: background-color: linear-gradient(...) работать не будет. Чтобы работало нужно замените свойство на background или background-image. */
+    /* font-size: 16px !important; */
+}
+
+.title {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.2px;
+    text-transform: uppercase;
+    color: #7E7E82;
+}
+
+.go {
+    display: flex;
+    /* display: none; */
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    /* box-sizing: border-box; */
+    /* background-color: transparent; */
+    /* border: 0.5px solid rgba(0, 0, 0, 0); */
+    /* border-radius: 20px; */
+}
+
+.logo {
+    width: 108px;
+    height: 32px;
+}
+
+.swiper {
+    /* display: flex; */
+    /* flex-direction: row; */
+    background-color: #F8F8F8;
+    /* margin: 16px; */
+    padding: 16px 8px 16px 16px;
+}
+
+.swiper-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    position: relative;
+    /* flex-direction: row; */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.swiper-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 24px;
+    height: 81px;
+    pointer-events: none;
+    background-image: linear-gradient(to right, transparent, #F8F8F8);
+    /* background-image: linear-gradient(to right, transparent, rgba(248, 248, 248, 0.0001)); */
+    /* background-image: linear-gradient(to right, transparent, rgb(248 248 248 / 0.01%)); */
+}
+
+.swiper-slide {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    gap: 60px;
+    /* margin: 16px; */
+    padding: 16px;
+    width: 240px;
+    height: 72px;
+    background-color: #FFFFFF;
+    border: 1px solid #EAEAEA;
+    border-radius: 6px;
+}
