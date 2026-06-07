@@ -15,10 +15,11 @@
 }
 
 body {
-    /* display: flex;
-    flex-direction: column; */
+    display: flex;
+    flex-direction: column;
     /* display: grid;
     grid-template: 88px 509px / 320px; */
+    /* height: 100vh; */
     margin: 0;
     font-family: 'TT Lakes', sans-serif;
     font-size: 16px;
@@ -63,42 +64,60 @@ body {
     height: 32px;
 }
 
+.container {
+    background-color: #F8F8F8;
+    padding-top: 16px;
+    height: 100vh;
+    /* padding: 16px 8px 16px 16px; */
+}
+
+/* Главный контейнер должен быть родителем для абсолютного позиционирования */
 .swiper {
     /* display: flex; */
     /* flex-direction: row; */
+    position: relative;
+    height: 100%; /* Чтобы контейнер занял всё пространство и посему были видны все элементы, включая пагинацию */
     background-color: #F8F8F8;
-    /* margin: 16px; */
-    padding: 16px 8px 16px 16px;
+    margin: 0px 8px 16px 16px;
+    /* padding: 16px 8px 16px 16px; */
+    overflow: hidden;
 }
 
 .swiper-wrapper {
     display: flex;
     justify-content: space-between;
-    gap: 16px;
+    flex-wrap: nowrap; /* 👈 Запрещает перенос слайдов на новую строку */
+    /* gap: 16px; */ /* Если задать отступы здесь, то при прокрутке слайды будут смещаться, так как перерасчёт в swiper будет не корректным, поэтому отступы задаём строго в JS spaceBetween: 16, */
     position: relative;
     /* flex-direction: row; */
-    overflow: hidden;
-    white-space: nowrap;
+    /* overflow: hidden; */
+    /* white-space: nowrap; */
 }
 
-.swiper-wrapper::after {
+.swiper-shadow-overlay::after {
     content: '';
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -4px;
+    right: 0px;
     width: 24px;
     height: 81px;
-    pointer-events: none;
+    /* height: 100%; */
+    pointer-events: none; /* 👈 КРИТИЧЕСКИ ВАЖНО: клики будут проходить сквозь облако на слайды */
     background-image: linear-gradient(to right, transparent, #F8F8F8);
     /* background-image: linear-gradient(to right, transparent, rgba(248, 248, 248, 0.0001)); */
     /* background-image: linear-gradient(to right, transparent, rgb(248 248 248 / 0.01%)); */
+    z-index: 1; /* Должно быть выше слайдов, но ниже пагинации */
 }
 
 .swiper-slide {
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between;
+    /* overflow-x: auto; */
+    /* white-space: nowrap; */
+    /* scrollbar-width: none; */
+    flex-shrink: 0;
     align-items: center;
-    gap: 60px;
+    /* gap: 60px; */
     /* margin: 16px; */
     padding: 16px;
     width: 240px;
@@ -106,4 +125,103 @@ body {
     background-color: #FFFFFF;
     border: 1px solid #EAEAEA;
     border-radius: 6px;
+}
+
+/* Контейнер для точек (центрируем внизу слайдера) */
+.swiper-pagination {
+    position: relative;
+    top: 16px;
+    /* bottom: 10px; */
+    /* left: 0; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    /* z-index: 9999; */
+}
+
+/* Сама точка (буллит) */
+.swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #DDDDDD; /* Цвет неактивной точки */
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+/* Эффект при наведении на обычную (неактивную) точку */
+.swiper-pagination-bullet:hover {
+    opacity: 1; /* Делаем точку более заметной при наведении */
+    /* background: #F8F8F8; / Можно изменить цвет при наведении, например, на ваш светлый / */ 
+}
+
+/* Активная точка */
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #B5B6BC; /* Цвет активной точки (наш цвет из шапки) Или любой наш цвет */
+}
+
+/* Эффект при наведении на уже активную точку (если нужно) */
+.swiper-pagination-bullet-active:hover {
+    cursor: default; /* Показываем, что кликать на активную уже не имеет смысла */
+}
+
+.circle-arrow {
+
+    width: 40px;
+    height: 40px;
+    border: 2px solid #FF3E79;
+    border-radius: 20px; /* Или border-radius: 50%; */
+    background: transparent;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+/* Варианты самому сделать стрелку похожую на знак больше > без картинок, чисто на CSS */
+/* .circle-arrow::after {
+    content: '';
+    width: 9.6px;
+    height: 9.6px;
+    border-top: 2px solid #FF3E79;
+    border-right: 2px solid #FF3E79;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    margin-left: -4px;
+} */
+
+/* Общие стили для обеих половинок стрелки */
+.circle-arrow::before, .circle-arrow::after {
+    content: '';
+    position: absolute;
+    width: 9.6px; /* Длина половинки стрелки */
+    height: 2px; /* Толщина линии */
+    background-color: #FF3E79;
+    /* border-top: 2px solid #FF3E79;
+    border-right: 2px solid #FF3E79; */
+    border-radius: 2px; /* 👈 Скругляет края линий */
+    /* transform: rotate(45deg); */
+    /* margin-left: -4px; */
+    top: 58%;  /* Сдвиг к центру круга */
+    left: 52%; /* Сдвиг к центру круга */
+}
+
+/* Верхняя половинка */
+.circle-arrow::before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+    top: calc(50% -2.6px); /* Смещаем верхний усик чуть выше */
+}
+
+/* Нижняя половинка */
+.circle-arrow::after {
+    transform: translate(-50%, -50%) rotate(45deg);
+    top: calc(50% + -2.6px); /* Смещаем нижний усик чуть ниже */
+    /* Строка top: calc(50% + 3px); вычисляет точное положение нижней линии стрелки по вертикали, чтобы она идеально состыковалась с верхней линией. Вот как эта математика работает по шагам:50% — браузер берет за основу ровно половину высоты круглой кнопки (ее центр) [1]. Если бы мы оставили просто 50%, обе палочки наложились бы друг на друга ровно посередине. + 3px — функция calc() сдвигает нижнюю палочку на 3 пикселя вниз от центра кнопки. Зачем нужен сдвиг? Поскольку верхняя палочка в коде сдвинута на 3 пикселя вверх (- 3px), а нижняя на 3 пикселя вниз (+ 3px), они разъезжаются от центра в разные стороны, образуя между собой аккуратный и ровный угол стрелки >. ⚠️ Важное правило синтаксиса: Внутри функции calc() знаки плюс + и минус - обязательно должны быть отделены пробелами с двух сторон [1]. Если написать 50%+3px без пробелов, браузер выдаст ошибку и проигнорирует это свойство [1]. */
 }
