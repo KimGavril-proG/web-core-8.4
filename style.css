@@ -8,6 +8,16 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'TT Lakes';
+    src: url('TTLakes-Medium.eot');
+    src: local('TT Lakes Medium'), local('TTLakes-Medium'),
+        url('./fonts/TTLakes-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -59,10 +69,10 @@ body {
     /* border-radius: 20px; */
 }
 
-.logo {
+/* .logo {
     width: 108px;
     height: 32px;
-}
+} */
 
 .container {
     background-color: #F8F8F8;
@@ -144,7 +154,7 @@ body {
 .swiper-pagination-bullet {
     width: 12px;
     height: 12px;
-    border-radius: 50%;
+    border-radius: 50%; /* Или border-radius: 20px; */
     background-color: #DDDDDD; /* Цвет неактивной точки */
     opacity: 0.7;
     cursor: pointer;
@@ -154,7 +164,7 @@ body {
 /* Эффект при наведении на обычную (неактивную) точку */
 .swiper-pagination-bullet:hover {
     opacity: 1; /* Делаем точку более заметной при наведении */
-    /* background: #F8F8F8; / Можно изменить цвет при наведении, например, на ваш светлый / */ 
+    /* background: #F8F8F8; / Можно изменить цвет при наведении, например, на наш светлый / */ 
 }
 
 /* Активная точка */
@@ -185,18 +195,6 @@ body {
     transition: transform 0.2s, opacity 0.2s;
 }
 
-/* Варианты самому сделать стрелку похожую на знак больше > без картинок, чисто на CSS */
-/* .circle-arrow::after {
-    content: '';
-    width: 9.6px;
-    height: 9.6px;
-    border-top: 2px solid #FF3E79;
-    border-right: 2px solid #FF3E79;
-    border-radius: 2px;
-    transform: rotate(45deg);
-    margin-left: -4px;
-} */
-
 /* Общие стили для обеих половинок стрелки */
 .circle-arrow::before, .circle-arrow::after {
     content: '';
@@ -225,3 +223,688 @@ body {
     top: calc(50% + -2.6px); /* Смещаем нижний усик чуть ниже */
     /* Строка top: calc(50% + 3px); вычисляет точное положение нижней линии стрелки по вертикали, чтобы она идеально состыковалась с верхней линией. Вот как эта математика работает по шагам:50% — браузер берет за основу ровно половину высоты круглой кнопки (ее центр) [1]. Если бы мы оставили просто 50%, обе палочки наложились бы друг на друга ровно посередине. + 3px — функция calc() сдвигает нижнюю палочку на 3 пикселя вниз от центра кнопки. Зачем нужен сдвиг? Поскольку верхняя палочка в коде сдвинута на 3 пикселя вверх (- 3px), а нижняя на 3 пикселя вниз (+ 3px), они разъезжаются от центра в разные стороны, образуя между собой аккуратный и ровный угол стрелки >. ⚠️ Важное правило синтаксиса: Внутри функции calc() знаки плюс + и минус - обязательно должны быть отделены пробелами с двух сторон [1]. Если написать 50%+3px без пробелов, браузер выдаст ошибку и проигнорирует это свойство [1]. */
 }
+
+/* Главная кнопка */
+.show-more-btn {
+  /* display: inline-flex; */
+  display: none;
+  align-items: center;
+  gap: 12px; /* Отступ между иконкой и текстом */
+  /* margin: 30px 0 0 0; */ /* Кнопка слева, если так: margin: 30px auto 0; то центрируем кнопку кнопкой по центру под слайдером */
+  margin: 24px 0 0 24px;
+  
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  
+  /* font-family: inherit; */
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  /* font-weight: 500; */
+  color: #1A1A1A;
+}
+
+/* Общий контейнер для иконки стрелок */
+.arrow-icon {
+  position: relative;
+  /* width: 14px;
+  height: 16px;  */ /* Высота, чтобы обе стрелки поместились друг под другом */
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Стили для первой и второй стрелки */
+.arrow-1, .arrow-2 {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 6px;
+}
+
+/* Сдвигаем вторую стрелку строго под первую */
+.arrow-1 { top: 0px; }
+.arrow-2 { top: 6px; } /* 👈 Вот этот сдвиг сделает их друг под другом */
+
+/* Собираем усики стрелок из абсолютно круглых линий */
+.arrow-1::before, .arrow-1::after,
+.arrow-2::before, .arrow-2::after {
+  content: '';
+  position: absolute;
+  width: 8px;            /* Длина половинки стрелки */
+  height: 2px;           /* Толщина линии */
+  background-color: #41F6D7; /* Наш бирюзовый цвет */
+  border-radius: 10px;   /* 👈 Полное и идеальное скругление концов */
+  transition: transform 0.3s ease;
+}
+
+/* Левые половинки (смотрят вниз-вправо) */
+.arrow-1::before, .arrow-2::before {
+  /* left: 0.5px;
+  top: 2px; */
+  left: 5.75px;
+  top: 15px;
+  transform: rotate(45deg);
+  /* transform-origin: left center; */
+  transform-origin: center;
+}
+
+/* Правые половинки (смотрят вниз-влево и идеально стыкуются в центре) */
+.arrow-1::after, .arrow-2::after {
+  /* right: 0.5px;
+  top: 2px; */
+  right: 5.75px;
+  top: 15px;
+  transform: rotate(-45deg);
+  /* transform-origin: right center; */
+  transform-origin: center;
+}
+
+/* --- СТАБИЛЬНАЯ АНИМАЦИЯ ПЕРЕВОРОТА ЧЕРЕЗ JS-КЛАСС --- */
+
+/* Левые половинки (аккуратный разворот вверх) */
+.show-more-btn.is-open .arrow-1::before,
+.show-more-btn.is-open .arrow-2::before {
+  /* top: 2px; */ /* Удерживаем их на той же высоте, чтобы не пропадали */
+  top: 15px;
+  transform: rotate(-45deg); /* Меняем угол на зеркальный */
+}
+
+/* Правые половинки (аккуратный разворот вверх) */
+.show-more-btn.is-open .arrow-1::after,
+.show-more-btn.is-open .arrow-2::after {
+  /* top: 2px; */
+  top: 15px;
+  transform: rotate(45deg); /* Меняем угол на зеркальный */
+}
+
+.show-more-btn.is-open .arrow-icon,
+.show-more-btn.is-open .btn-text {
+    margin-top: 46px;
+}
+
+
+
+/* --- ПЛАНШЕТЫ (от 768px до 1119px) --- */
+@media (min-width: 768px) and (max-width: 1119px) {
+.header {
+    height: 56px;
+}
+
+  .swiper-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr); /* Сетка 3 столбца */
+    /* gap: 20px; */
+    gap: 24px;
+    margin: 24px 24px 0;
+    transform: none !important;
+  }
+
+  .swiper-shadow-overlay::after {
+    display: none;
+  }
+
+  .swiper-slide {
+    /* width: 100% !important; */
+    width: 224px;
+  }
+
+  /* 👈 ПРЯЧЕМ ВСЕ КАРТОЧКИ, НАЧИНАЯ С 7-Й (остается ровно 6 штук в 2 ряда) */
+  .swiper-slide:nth-child(n + 7) {
+    display: none !important;
+  }
+
+  /* ПОКАЗЫВАЕМ ИХ, ЕСЛИ НАЖАТА КНОПКА */
+  .swiper-wrapper.is-expanded .swiper-slide:nth-child(n + 7) {
+    display: flex !important;
+  }
+
+  .swiper-pagination {
+    display: none !important;
+  }
+
+  .show-more-btn {
+    display: block; /* Показываем кнопку на планшетах */
+  }
+}
+
+/* --- БОЛЬШИЕ ПК (от 1120px и выше) --- */
+@media (min-width: 1120px) {
+.header {
+    height: 56px;
+}
+
+  .swiper-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr); /* Сетка 4 столбца */
+    /* gap: 30px; */
+    gap: 32px;
+    margin: 24px 32px 0;
+    transform: none !important;
+  }
+
+  .swiper-shadow-overlay::after {
+    display: none;
+  }
+
+  .swiper-slide {
+    /* width: 100% !important; */
+    /* width: 240px; */
+  }
+
+  /* 👈 ПРЯЧЕМ ВСЕ КАРТОЧКИ, НАЧИНАЯ С 9-Й (остается ровно 8 штук в 2 ряда) */
+  .swiper-slide:nth-child(n + 9) {
+    display: none !important;
+  }
+
+  /* ПОКАЗЫВАЕМ ИХ, ЕСЛИ НАЖАТА КНОПКА */
+  .swiper-wrapper.is-expanded .swiper-slide:nth-child(n + 9) {
+    display: flex !important;
+  }
+
+  .swiper-pagination {
+    display: none !important;
+  }
+
+  .show-more-btn {
+    display: block; /* Показываем кнопку на ПК */
+    margin: 30px 0 0 31px;
+  }
+}
+
+
+
+/* Варианты самому сделать стрелку похожую на знак больше > без картинок, чисто на CSS */
+/* .circle-arrow::after {
+    content: '';
+    width: 9.6px;
+    height: 9.6px;
+    border-top: 2px solid #FF3E79;
+    border-right: 2px solid #FF3E79;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    margin-left: -4px;
+} */
+
+
+
+/* .show-more-btn {
+  display: none; / На мобилках кнопка не нужна, там просто скролл /
+} */
+
+/* --- ПЛАНШЕТЫ (от 768px до 1119px) --- */
+/* @media (min-width: 768px) {
+  .swiper-wrapper {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr); / 3 колонки /
+    gap: 20px;
+    transform: none !important; / Сбрасываем сдвиги Swiper /
+    
+    / Ограничиваем высоту под 2 ряда карточек (высоту подбераем под свой дизайн) /
+    max-height: 400px; 
+    overflow: hidden;
+    transition: max-height 0.4s ease; / Плавное открытие /
+  } */
+
+  /* Если нажали "Развернуть" — убираем ограничение высоты */
+  /* .swiper-wrapper.is-expanded {
+    max-height: 2000px; 
+  } */
+
+  /* .swiper-slide {
+    width: 100% !important; / Карточки занимают всю ширину ячейки grid /
+  } */
+
+  /* .swiper-pagination {
+    display: none !important; / Прячем точки на ПК /
+  } */
+
+  /* .show-more-btn {
+    display: block; / Показываем кнопку /
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+} */
+
+/* --- БОЛЬШИЕ ПК (от 1120px и выше) --- */
+/* @media (min-width: 1120px) {
+  .swiper-wrapper {
+    grid-template-columns: repeat(4, 1fr); / Сетка меняется на 4 колонки (или больше) /
+    gap: 30px; / Увеличиваем отступы для больших экранов /
+    
+    / Корректируем высоту под 2 ряда для 4 колонок /
+    max-height: 500px; 
+  }
+  
+  .swiper-wrapper.is-expanded {
+    max-height: 2000px;
+  }
+} */
+
+
+/* .show-more-btn {
+  display: none; / На мобилках кнопка скрыта /
+} */
+
+/* .show-more-btn {
+  display: none;
+  margin: 30px auto 0; / Центрируем кнопку кнопкой под слайдером /
+  padding: 12px 30px;  / Внутренние отступы (высота и ширина кнопки) /
+  
+  / Стили текста /
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFFFFF;      / Цвет текста /
+  
+  / Стили фона и рамки /
+  background-color: #FF3366; / Розовый цвет фона (как у нашей стрелочки) /
+  border: 2px solid #FF3366;
+  border-radius: 8px;        / Закругление углов /
+  
+  cursor: pointer;
+  transition: all 0.3s ease; / Плавная анимация ховера /
+}
+
+/ Эффект при наведении /
+.show-more-btn:hover {
+  background-color: transparent; / Делаем прозрачный фон /
+  color: #FF3366;                / Текст становится розовым /
+  transform: translateY(-2px);   / Кнопка слегка приподнимается /
+}
+
+/ Эффект при клике /
+.show-more-btn:active {
+  transform: translateY(0);
+} */
+
+/* Главная кнопка-контейнер */
+/* .show-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px; / Отступ между стрелками и текстом /
+  margin: 30px auto 0;
+  
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A; / Цвет нашего текста /
+}
+
+/ Контейнер для двух стрелочек /
+.double-arrow {
+  position: relative;
+  width: 12px;
+  height: 16px; / Высота, чтобы обе стрелки поместились /
+  display: inline-block;
+} */
+
+/* Общие стили для верхнего и нижнего уголка */
+/* .double-arrow::before,
+.double-arrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  
+  / Рисуем уголок (границы снизу и справа) /
+  border-bottom: 2px solid #00F5D4; / Бирюзовый цвет линий /
+  border-right: 2px solid #00F5D4;
+  
+  / Поворачиваем на 45 градусов, чтобы получилась "v" /
+  transform: rotate(45deg);
+  
+  / Сглаживаем края рамки /
+  border-bottom-right-radius: 2px; 
+  
+  transition: transform 0.3s ease, top 0.3s ease;
+} */
+
+/* Общие стили для верхнего и нижнего уголка */
+/* .double-arrow::before,
+.double-arrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  
+  / Рисуем уголок (границы снизу и справа) /
+  border-bottom: 2px solid #00F5D4; 
+  border-right: 2px solid #00F5D4;
+  
+  / Поворачиваем на 45 градусов, чтобы получилась "v" /
+  transform: rotate(45deg);
+  
+  / 👈 ЭТИ ТРИ СТРОКИ СДЕЛЕЮТ КРАЯ ИДЕАЛЬНО КРУГЛЫМИ: /
+  border-bottom-right-radius: 2px; / Скругляем сам центральный кончик «птички» /
+  border-top-right-radius: 1px;    / Скругляем верхний правый срез линии /
+  border-bottom-left-radius: 1px;   / Скругляем нижний левый срез линии /
+  
+  transition: transform 0.3s ease, top 0.3s ease;
+} */
+
+
+/* Верхняя стрелочка */
+/* .double-arrow::before {
+  top: 1px;
+}
+
+/ Нижняя стрелочка /
+.double-arrow::after {
+  top: 7px; / Сдвигаем ниже первой /
+}
+
+/ Когда кнопка внутри активного слайдера (или рядом с ним), переворачиваем уголки /
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow::before,
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow::after {
+  / Переворачиваем стрелочки вверх /
+  transform: rotate(-135deg); 
+}
+
+/ Небольшая корректировка положения при перевороте, чтобы они не съезжали /
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow::before {
+  top: 5px;
+}
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow::after {
+  top: 11px;
+} */
+
+
+/* Главная кнопка-контейнер */
+/* .show-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px; / Отступ между стрелками и текстом /
+  margin: 30px auto 0;
+  
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A; / Цвет нашего текста /
+}
+
+/ Контейнер для двух стрелочек /
+.double-arrow {
+  position: relative;
+  width: 14px;
+  height: 18px; / Чуть увеличили высоту для идеального баланса /
+  display: inline-block;
+}
+
+/ Общие стили для верхней и нижней палочки /
+.double-arrow::before,
+.double-arrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  
+  / Задаем размеры самих палочек /
+  width: 10px;           / Длина каждого усика /
+  height: 2px;           / Толщина стрелки (можем сделать 3px, если нужно толще) /
+  background-color: #00F5D4; / Бирюзовый цвет /
+  
+  * 👈 ЭТО СВОЙСТВО СДЕЛАЕТ ТОРЦЫ ЛИНИЙ АБСОЛЮТНО КРУГЛЫМИ /
+  border-radius: 10px; 
+  
+  transform-origin: right center; / Центр поворота — кончик стрелки /
+  transition: transform 0.3s ease, top 0.3s ease;
+}
+
+/ ВЕРХНЯЯ палочка (направлена вниз-вправо) /
+.double-arrow::before {
+  top: 4px;
+  transform: rotate(45deg);
+}
+
+/ НИЖНЯЯ палочка (направлена вверх-вправо) /
+.double-arrow::after {
+  top: 10px;
+  transform: rotate(-45deg);
+}
+
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow::before {
+  top: 6px;
+  transform: rotate(135deg); / Поворот в обратную сторону /
+}
+
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow::after {
+  top: 12px;
+  transform: rotate(-135deg); / Поворот в обратную сторону /
+} */
+
+
+/* Главная кнопка-контейнер (теперь прижата к левому краю) */
+/* .show-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 30px 0 0 0; / 👈 Убрали auto, кнопка ушла влево /
+  
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A;
+}
+
+/ Контейнер для двух стрелочек /
+.double-arrow {
+  position: relative;
+  width: 14px;
+  height: 18px;
+  display: inline-block;
+}
+
+/ Общие стили для ВСЕХ четырех палочек /
+.double-arrow::before,
+.double-arrow::after,
+.double-arrow .line-top,
+.double-arrow .line-bottom {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 10px;
+  height: 2px;
+  background-color: #00F5D4;
+  border-radius: 10px;
+  transform-origin: right center;
+  transition: transform 0.3s ease, top 0.3s ease;
+}
+
+/ --- СОСТОЯНИЕ "СВЕРНУТО" (Стрелочки смотрят вниз) --- /
+
+/ Первая стрелочка (левая) /
+.double-arrow::before {
+  top: 4px;
+  transform: rotate(45deg);
+}
+.double-arrow::after {
+  top: 10px;
+  transform: rotate(-45deg);
+}
+
+/ Вторая стрелочка (правая, сдвинута на 6px вперед) /
+.double-arrow .line-top {
+  top: 4px;
+  left: 6px;
+  transform: rotate(45deg);
+}
+.double-arrow .line-bottom {
+  top: 10px;
+  left: 6px;
+  transform: rotate(-45deg);
+}
+
+
+/ --- СОСТОЯНИЕ "РАЗВЕРНУТО" (Стрелочки плавно смотрят вверх) --- /
+
+/ Левая стрелочка смотрит вверх /
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow::before {
+  top: 6px;
+  transform: rotate(-45deg); / 👈 Исправленный угол, палочки больше не исчезают /
+}
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow::after {
+  top: 12px;
+  transform: rotate(45deg);
+}
+
+/ Правая стрелочка смотрит вверх /
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow .line-top {
+  top: 6px;
+  left: 6px;
+  transform: rotate(-45deg);
+}
+.swiper-wrapper.is-expanded + .show-more-btn .double-arrow .line-bottom {
+  top: 12px;
+  left: 6px;
+  transform: rotate(45deg);
+} */
+
+
+/* Главная кнопка (выровнена по левому краю) */
+/* .show-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; / Отступ между двойной стрелкой и текстом /
+  margin: 30px 0 0 0; / Кнопка слева /
+  
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A;
+}
+
+/ Создаем двойную стрелочку через псевдоэлемент /
+.show-more-btn::before {
+  content: '';
+  width: 18px;  / Ширина под две стрелочки /
+  height: 12px; / Высота иконки /
+  flex-shrink: 0;
+  
+  / Рисуем две идеальные скругленные стрелочки через SVG (код цвета %2300F5D4) /
+  background-image: 
+    url('data:image/svg+xml;utf8,<svg xmlns="http://w3.org" viewBox="0 0 12 8" fill="none"><path d="M2 2L6 6L10 2" stroke="%2300F5D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://w3.org" viewBox="0 0 12 8" fill="none"><path d="M2 2L6 6L10 2" stroke="%2300F5D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  
+  / Позиционируем их: первая левее, вторая правее на 6 пикселей /
+  background-position: left center, left 6px center;
+  background-repeat: no-repeat;
+  background-size: 12px 8px; / Размер каждой стрелочки /
+  
+  transition: transform 0.3s ease; / Плавный переворот /
+}
+
+/ 👈 ИСПРАВЛЕНИЕ ИСЧЕЗНОВЕНИЯ: используем селектор "~" вместо "+" 
+   Теперь, даже если пагинация стоит между слайдером и кнопкой, стрелки НЕ пропадут /
+.swiper-wrapper.is-expanded ~ .show-more-btn::before {
+  transform: rotate(180deg); / Плавно переворачиваем стрелочки вверх /
+} */
+
+
+/* Главная кнопка (выровнена по левому краю) */
+/* .show-more-btn {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  
+  / Делаем отступ слева под две стрелочки (18px ширина + 10px зазор) /
+  padding-left: 28px; 
+  margin: 30px 0 0 0;
+  
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1A1A1A;
+}
+
+/ Общие стили для первой и второй стрелочки /
+.show-more-btn::before,
+.show-more-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  
+  / Рисуем уголок: нижняя и правая рамки /
+  border-bottom: 2px solid #00F5D4; / Наш бирюзовый цвет /
+  border-right: 2px solid #00F5D4;
+  
+  / Изначально поворачиваем на 45 градусов, чтобы уголок смотрел строго вниз /
+  transform: translateY(-50%) rotate(45deg);
+  
+  / Скругляем центральный кончик и боковые срезы рамок /
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 1px;
+  border-bottom-left-radius: 1px;
+  
+  transition: transform 0.3s ease;
+}
+
+/ ПЕРВАЯ стрелочка (левая) /
+.show-more-btn::before {
+  left: 0;
+}
+
+/ ВТОРАЯ стрелочка (правая, сдвинута на 6px правее) /
+.show-more-btn::after {
+  left: 6px; 
+}
+
+/ --- ЭФФЕКТ ПЕРЕВОРОТА ПРИ НАЖАТИИ --- /
+/ Используем селектор "~", чтобы кнопка не терялась из-за пагинации /
+.swiper-wrapper.is-expanded ~ .show-more-btn::before,
+.swiper-wrapper.is-expanded ~ .show-more-btn::after {
+  / Переворачиваем уголки строго вверх (-135 градусов) /
+  transform: translateY(-50%) rotate(-135deg);
+} */
+ 
+
+
+/* --- ПЛАВНЫЙ ПЕРЕВОРОТ ВВЕРХ ПРИ НАЖАТИИ --- */
+/* Используем надежный селектор "~", чтобы ничего не пропадало */
+/* .swiper-wrapper.is-expanded ~ .show-more-btn .arrow-1::before,
+.swiper-wrapper.is-expanded ~ .show-more-btn .arrow-2::before {
+  transform: rotate(-45deg); / Поворачиваем левые половинки вверх /
+}
+
+.swiper-wrapper.is-expanded ~ .show-more-btn .arrow-1::after,
+.swiper-wrapper.is-expanded ~ .show-more-btn .arrow-2::after {
+  transform: rotate(45deg); / Поворачиваем правые половинки вверх /
+} */
